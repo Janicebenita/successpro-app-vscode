@@ -1,0 +1,23 @@
+node_modules/
+.pnpm-store/
+.next/
+out/
+coverage/
+playwright-report/
+test-results/
+.env
+.env.*
+!.env.example
+.DS_Store
+*.log
+*.tsbuildinfo
+.sites-runtime/
+tmp/
+.local/
+processing/.venv/
+processing/__pycache__/
+processing/**/__pycache__/
+Sample Resumes/
+Jooble API Key*
+Careerjet India API Key*
+Render API Key*

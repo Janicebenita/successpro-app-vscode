@@ -1,0 +1,68 @@
+[
+  {
+    "id": "V01",
+    "name": "Layout, hierarchy and ease of scanning",
+    "scope": "Human reviewer can find sections, identify entries and distinguish headings from evidence. Order serves the target and career context.",
+    "anchors": {
+      "0": "Essential sections/entries difficult to locate or follow",
+      "3": "Navigation usable but hierarchy or order inconsistent",
+      "5": "Clear hierarchy, section order and entry grouping make relevant evidence easy to find"
+    },
+    "weight": 0.24
+  },
+  {
+    "id": "V02",
+    "name": "Typography and text legibility",
+    "scope": "Body text, headings and dates are readable at normal viewing size and in the exported document; no font-prestige preference.",
+    "anchors": {
+      "0": "Material text illegible, extremely small or clipped",
+      "3": "Generally readable with some difficult text",
+      "5": "Comfortably readable body/headings/dates throughout the exported document"
+    },
+    "weight": 0.2
+  },
+  {
+    "id": "V03",
+    "name": "Spacing, alignment and information density",
+    "scope": "Whitespace, alignment, line spacing and grouping avoid collisions and support comfortable reading.",
+    "anchors": {
+      "0": "Overlaps/crowding or alignment materially disrupt reading",
+      "3": "Some crowded areas or inconsistent alignment",
+      "5": "Balanced density, coherent alignment and clear grouping across pages"
+    },
+    "weight": 0.16
+  },
+  {
+    "id": "V04",
+    "name": "Visual consistency and professional coherence",
+    "scope": "Heading, bullet, date and emphasis styles are coherent; purposeful variation accepted; decorations do not distract.",
+    "anchors": {
+      "0": "Inconsistent styles/decorations obscure meaning",
+      "3": "Some repeated style inconsistencies or distractions",
+      "5": "Coherent styling and restrained emphasis support the target and content"
+    },
+    "weight": 0.12
+  },
+  {
+    "id": "V05",
+    "name": "Page length, flow and space utilization",
+    "scope": "Length is proportionate to relevant evidence/instructions; page breaks, headings and text are not stranded, truncated or accidentally blank.",
+    "anchors": {
+      "0": "Severe truncation, broken flow or disproportionate compression/length",
+      "3": "Usable flow with avoidable breaks, blanks or density imbalance",
+      "5": "Length justified by evidence/context; clean page transitions and balanced space"
+    },
+    "weight": 0.16
+  },
+  {
+    "id": "V06",
+    "name": "Contrast, visual accessibility and meaningful graphics",
+    "scope": "Important information is readable in colour/grayscale and not conveyed only by colour, icons, charts or skill bars.",
+    "anchors": {
+      "0": "Essential meaning lost through low contrast or unexplained visual-only elements",
+      "3": "Some low-contrast/visual-only details need improvement",
+      "5": "Readable contrast and text equivalents preserve all essential meaning"
+    },
+    "weight": 0.12
+  }
+]

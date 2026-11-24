@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: successpro-careerjet-relay
+    runtime: node
+    plan: free
+    buildCommand: node --check infra/careerjet-relay/server.mjs
+    startCommand: node infra/careerjet-relay/server.mjs
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: CAREERJET_API_KEY
+        sync: false
+      - key: RELAY_SHARED_SECRET
+        sync: false
+      - key: SUCCESSPRO_ORIGIN
+        sync: false

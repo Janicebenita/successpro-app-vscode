@@ -1,0 +1,16 @@
+{
+  "name": "@successpro/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./ai": "./src/ai.ts",
+    "./learning": "./src/learning.ts",
+    "./jobs": "./src/jobs.ts",
+    "./url": "./src/url.ts"
+  },
+  "dependencies": {
+    "zod": "^4.1.0"
+  }
+}

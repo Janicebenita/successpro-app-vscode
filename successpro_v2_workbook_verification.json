@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SuccessPro v2 Workbook Verification & Test Suite",
+  "version": "2.0.0",
+  "generatedDate": "2026-11-14",
+  "verificationResults": {
+    "totalParameters": 20,
+    "totalRules": 24,
+    "totalCareerContexts": 15,
+    "totalTechnicalChecks": 12,
+    "withJdTotalPoints": 100,
+    "noJdTotalPoints": 100,
+    "formulaVerification": "VERIFIED_EXACT"
+  },
+  "testCases": [
+    {
+      "testId": "TC01_ALL_RATING_4_WITH_JD",
+      "description": "Workbook Calculator With JD synthetic demo case where all 20 parameters are rated 4/5.",
+      "mode": "with_job_description",
+      "inputs": {
+        "C01": 4, "C02": 4, "C03": 4, "C04": 4, "C05": 4, "C06": 4, "C07": 4, "C08": 4, "C09": 4,
+        "V01": 4, "V02": 4, "V03": 4, "V04": 4, "V05": 4, "V06": 4,
+        "J01": 4, "J02": 4, "J03": 4, "J04": 4, "J05": 4
+      },
+      "expectedPillars": {
+        "contentEarned": 40.0,
+        "contentMax": 50.0,
+        "visualEarned": 20.0,
+        "visualMax": 25.0,
+        "jobMatchEarned": 20.0,
+        "jobMatchMax": 25.0
+      },
+      "expectedCumulativeScore": 80.0,
+      "expectedStatus": "completed",
+      "verifiedAgainstWorkbook": true
+    },
+    {
+      "testId": "TC02_ALL_RATING_4_NO_JD",
+      "description": "Workbook Calculator No JD synthetic demo case where all 15 parameters are rated 4/5 and Job Match is excluded.",
+      "mode": "no_job_description",
+      "inputs": {
+        "C01": 4, "C02": 4, "C03": 4, "C04": 4, "C05": 4, "C06": 4, "C07": 4, "C08": 4, "C09": 4,
+        "V01": 4, "V02": 4, "V03": 4, "V04": 4, "V05": 4, "V06": 4
+      },
+      "expectedPillars": {
+        "contentEarned": 52.0,
+        "contentMax": 65.0,
+        "visualEarned": 28.0,
+        "visualMax": 35.0,
+        "jobMatchEarned": 0.0,
+        "jobMatchMax": 0.0
+      },
+      "expectedCumulativeScore": 80.0,
+      "expectedStatus": "completed",
+      "verifiedAgainstWorkbook": true
+    },
+    {
+      "testId": "TC03_WORKED_MIXED_TOTAL_WITH_JD",
+      "description": "Workbook rule 01 worked example: Content 38/50, Visuals 20/25, Match 17/25 = 75/100.",
+      "mode": "with_job_description",
+      "expectedPillars": {
+        "contentEarned": 38.0,
+        "contentMax": 50.0,
+        "visualEarned": 20.0,
+        "visualMax": 25.0,
+        "jobMatchEarned": 17.0,
+        "jobMatchMax": 25.0
+      },
+      "expectedCumulativeScore": 75.0,
+      "expectedStatus": "completed",
+      "verifiedAgainstWorkbook": true
+    },
+    {
+      "testId": "TC04_WORKED_MIXED_TOTAL_NO_JD",
+      "description": "Workbook rule 02 worked example: Content 49.4/65, Visuals 28/35 = 77.4/100.",
+      "mode": "no_job_description",
+      "expectedPillars": {
+        "contentEarned": 49.4,
+        "contentMax": 65.0,
+        "visualEarned": 28.0,
+        "visualMax": 35.0,
+        "jobMatchEarned": 0.0,
+        "jobMatchMax": 0.0
+      },
+      "expectedCumulativeScore": 77.4,
+      "expectedStatus": "completed",
+      "verifiedAgainstWorkbook": true
+    },
+    {
+      "testId": "TC05_NA_REDISTRIBUTION_C05_WITH_JD",
+      "description": "Rule 05 test: C05 (base weight 4) is N/A. Remaining Content base weights sum to 46. C02 effective max = 50 * 10 / 46 = 10.869565...",
+      "mode": "with_job_description",
+      "naParameters": ["C05"],
+      "expectedEffectiveWeights": {
+        "C01": 6.521739130434782,
+        "C02": 10.869565217391305,
+        "C03": 8.695652173913043,
+        "C04": 7.608695652173913,
+        "C05": 0.0,
+        "C06": 5.434782608695652,
+        "C07": 4.3478260869565215,
+        "C08": 3.260869565217391,
+        "C09": 3.260869565217391
+      },
+      "expectedPillarTotal": 50.0,
+      "verifiedAgainstWorkbook": true
+    },
+    {
+      "testId": "TC06_PENDING_VISUAL_PARAMETERS_PASTED_TEXT",
+      "description": "Rule 07 test: Pasted text only without original visual document. V01–V06 are marked Pending. Cumulative score remains Pending.",
+      "mode": "with_job_description",
+      "pendingParameters": ["V01", "V02", "V03", "V04", "V05", "V06"],
+      "confirmedEarned": 60.0,
+      "pendingMax": 25.0,
+      "expectedPossibleRange": [60.0, 85.0],
+      "expectedScorePublicationStatus": "score_pending",
+      "verifiedAgainstWorkbook": true
+    },
+    {
+      "testId": "TC07_ZERO_RATING_ALL",
+      "description": "Boundary test: all parameters receive rating 0 -> total 0/100.",
+      "mode": "with_job_description",
+      "expectedCumulativeScore": 0.0,
+      "expectedStatus": "completed"
+    },
+    {
+      "testId": "TC08_PERFECT_RATING_ALL",
+      "description": "Boundary test: all parameters receive rating 5 -> total 100/100.",
+      "mode": "with_job_description",
+      "expectedCumulativeScore": 100.0,
+      "expectedStatus": "completed"
+    }
+  ],
+  "discrepanciesDetected": [
+    {
+      "area": "No-JD Weight Distribution",
+      "currentCode": "Normalizes to 66.67% Content / 33.33% Visual",
+      "workbookRequirement": "65 Content (1.3x) / 35 Visual (1.4x) / 0 Job Match",
+      "resolution": "Update domain weights engine to enforce 65/35 exact allocation"
+    },
+    {
+      "area": "Scored Parameter Model",
+      "currentCode": "7 grouped factors",
+      "workbookRequirement": "20 explicit scored parameters (C01-C09, V01-V06, J01-J05)",
+      "resolution": "Implement authoritative Parameter Registry in packages/domain/src/successpro-v2/"
+    },
+    {
+      "area": "Pasted Text Visual Handling",
+      "currentCode": "Finalizes score with Visual as Not evaluated",
+      "workbookRequirement": "Marks V01-V06 as Pending and holds Cumulative Score as Pending (confirmed earned + possible range)",
+      "resolution": "Implement Pending state manager in scoring pipeline"
+    }
+  ]
+}

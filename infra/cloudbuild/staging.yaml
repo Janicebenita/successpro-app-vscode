@@ -1,0 +1,30 @@
+substitutions:
+  _REGION: asia-south1
+  _REPOSITORY: successpro
+  _IMAGE_TAG: manual
+  _GOOGLE_AUTH_ENABLED: "true"
+  _FIREBASE_AUTH_DOMAIN: successpro-staging-1706786b.firebaseapp.com
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - -f
+      - apps/web/Dockerfile
+      - --build-arg=NEXT_PUBLIC_APP_URL=https://successpro.xfactor.ltd
+      - --build-arg=NEXT_PUBLIC_ENVIRONMENT=staging
+      - --build-arg=NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSyDoi1qx1pVaHphUIvXDZtFPl2j9y5POsgE
+      - --build-arg=NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=${_FIREBASE_AUTH_DOMAIN}
+      - --build-arg=NEXT_PUBLIC_FIREBASE_PROJECT_ID=successpro-staging-1706786b
+      - --build-arg=NEXT_PUBLIC_FIREBASE_APP_ID=1:913575819720:web:36486bea916f50c77c68fd
+      - --build-arg=NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=successpro-staging-1706786b.firebasestorage.app
+      - --build-arg=NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=913575819720
+      - --build-arg=NEXT_PUBLIC_GOOGLE_AUTH_ENABLED=${_GOOGLE_AUTH_ENABLED}
+      - -t
+      - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/web:${_IMAGE_TAG}
+      - .
+  - name: gcr.io/cloud-builders/docker
+    args: ["push", "${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/web:${_IMAGE_TAG}"]
+images:
+  - "${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/web:${_IMAGE_TAG}"
+options:
+  logging: CLOUD_LOGGING_ONLY

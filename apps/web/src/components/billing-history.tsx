@@ -1,0 +1,11 @@
+import { CancelSubscription } from "./cancel-subscription";
+import { formatIndiaDate } from "@/lib/format-date";
+
+type BillingRecord = { id: string; type: "writing" | "subscription"; name: string; state: string; amount: number | null; currency: string; createdAt: string | null; paidThrough: string | null; renewalEnabled: boolean | null; cancelAtCycleEnd?: boolean };
+
+function money(amount: number | null, currency: string) { return amount === null ? "Amount pending" : new Intl.NumberFormat(undefined, { style: "currency", currency, maximumFractionDigits: 0 }).format(amount / 100); }
+function label(state: string) { return state.replaceAll("_", " ").replace(/\b\w/g, (letter) => letter.toUpperCase()); }
+
+export function BillingHistory({ records }: { records: BillingRecord[] }) {
+  return <section className="work-card billing-history"><div className="card-heading"><div><span className="section-kicker">PAYMENT ACTIVITY</span><h3>Your payments and access</h3></div></div><p>One-time writing projects never renew. Subscription controls appear here only after an active, confirmed subscription exists.</p>{records.length === 0 ? <div className="billing-empty"><strong>No completed payment activity yet</strong><span>Your free access remains available. A payment record will appear only after SuccessPro receives a signed provider confirmation.</span></div> : <div className="billing-records">{records.map((record) => <article key={record.id}><div><span className="status-pill">{label(record.state)}</span><strong>{record.name}</strong><small>{record.type === "writing" ? "One-time writing project" : record.cancelAtCycleEnd ? `Renewal cancelled. Premium until ${formatIndiaDate(record.paidThrough) ?? "the end of your paid period"}.` : record.renewalEnabled ? "Subscription renewal is active" : "Subscription does not renew"}</small>{record.type === "subscription" && record.renewalEnabled && ["active", "authenticated", "past_due", "paused"].includes(record.state) ? <CancelSubscription id={record.id} /> : null}</div><div><strong>{money(record.amount, record.currency)}</strong><small>{record.paidThrough ? `Access through ${formatIndiaDate(record.paidThrough) ?? "the end of your paid period"}` : record.createdAt ? `Created ${formatIndiaDate(record.createdAt) ?? "date unavailable"}` : "Date unavailable"}</small></div></article>)}</div>}</section>;
+}

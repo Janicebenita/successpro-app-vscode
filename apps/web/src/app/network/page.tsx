@@ -1,0 +1,13 @@
+import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { AppShell } from "@/components/app-shell";
+import { NetworkWorkspace } from "@/components/network-workspace";
+import { adminDb } from "@/lib/firebase-admin";
+import { getSessionUser } from "@/lib/session";
+import { networkSuggestion, type NetworkProfile } from "@/lib/network";
+
+export const metadata: Metadata = {
+  title: "Professional network",
+  robots: { index: false, follow: false },
+}; export const dynamic = "force-dynamic";
+export default async function NetworkPage() { const user = await getSessionUser(); if (!user) redirect("/login?returnTo=/network"); const [publicSnapshot, viewerSnapshot, connectionSnapshot] = await Promise.all([adminDb.collection("public_profiles").where("published", "==", true).limit(200).get(), adminDb.collection("profiles").doc(user.uid).get(), adminDb.collection("connections").where("participantIds", "array-contains", user.uid).limit(200).get()]); const viewer = viewerSnapshot.data() ?? {}; const initialProfiles = publicSnapshot.docs.map((doc) => { const value = doc.data(); const experience = Array.isArray(value.experience) ? value.experience as Array<Record<string, unknown>> : []; const profile = { id: doc.id, ownerId: String(value.ownerId ?? ""), fullName: String(value.fullName ?? ""), headline: String(value.headline ?? ""), currentRole: String(value.currentRole ?? ""), employer: String(experience[0]?.employer ?? ""), industry: String(value.industry ?? ""), location: String(value.location ?? ""), skills: Array.isArray(value.skills) ? value.skills.map(String) : [], published: true } satisfies NetworkProfile; return { ...profile, ...networkSuggestion(profile, viewer) }; }).filter((profile) => profile.ownerId !== user.uid).sort((a, b) => b.score - a.score).slice(0, 20); const initialConnections = await Promise.all(connectionSnapshot.docs.map(async (doc) => { const value = doc.data(); const peerId = (value.participantIds as string[]).find((id) => id !== user.uid) ?? ""; const peerSnapshot = publicSnapshot.docs.find((candidate) => candidate.data().ownerId === peerId); const peer = peerSnapshot?.data() ?? {}; return { id: doc.id, status: String(value.status ?? "pending"), incoming: value.recipientId === user.uid, requestedAt: value.requestedAt?.toDate?.()?.toISOString?.() ?? null, connectedAt: value.connectedAt?.toDate?.()?.toISOString?.() ?? null, peer: { publicProfileId: peerSnapshot?.id ?? "", fullName: String(peer.fullName ?? "SuccessPro member"), headline: String(peer.headline ?? ""), location: String(peer.location ?? "") } }; })); return <AppShell><NetworkWorkspace initialProfiles={initialProfiles} initialConnections={initialConnections} /></AppShell>; }

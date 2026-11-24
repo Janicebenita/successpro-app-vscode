@@ -1,0 +1,13 @@
+"use client";
+import { useState } from "react";
+
+type Addon = { id: "resume-writer" | "career-document-suite"; name: string; description: string; amount: number; currency: string };
+declare global { interface Window { Razorpay?: new (options: Record<string, unknown>) => { open(): void } } }
+function money(amount: number, currency: string) { return new Intl.NumberFormat(undefined, { style: "currency", currency, maximumFractionDigits: 0 }).format(amount / 100); }
+async function loadCheckout() { if (window.Razorpay) return true; return await new Promise<boolean>((resolve) => { const script = document.createElement("script"); script.src = "https://checkout.razorpay.com/v1/checkout.js"; script.onload = () => resolve(true); script.onerror = () => resolve(false); document.head.appendChild(script); }); }
+
+export function WriterAddons({ currency, products }: { currency: string; products: Addon[] }) {
+  const [status, setStatus] = useState("Choose a one-time service for one writing project. Nothing renews automatically."); const [busy, setBusy] = useState("");
+  async function buy(addon: Addon) { setBusy(addon.id); const response = await fetch("/api/payments/addon-order", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ addonId: addon.id, currency }) }); const body = await response.json(); if (!response.ok) { setStatus(body.error); setBusy(""); return; } if (!await loadCheckout() || !window.Razorpay) { setStatus("Checkout could not load. No charge was made."); setBusy(""); return; } new window.Razorpay({ key: body.keyId, amount: body.amount, currency: body.currency, name: "SuccessPro", description: body.name, order_id: body.orderId, handler: () => setStatus("Payment received. We are confirming it securely before opening your writing project."), modal: { ondismiss: () => setStatus("Checkout closed. No completed payment was recorded.") }, theme: { color: "#153b66" } }).open(); setBusy(""); }
+  return <section className="work-card writer-addons"><div><span className="status-pill">ONE-TIME EXPERT HELP</span><h2>Hire a professional resume writer</h2><p>This purchase applies only to one project and does not start a subscription.</p></div><div className="addon-grid">{products.map((product) => <article key={product.id}><h3>{product.name}</h3><strong>{money(product.amount, product.currency)}</strong><p>{product.description}</p><button className="button button-primary" type="button" onClick={() => void buy(product)} disabled={busy === product.id}>{busy === product.id ? "Opening checkout…" : "Choose this service"}</button></article>)}</div><p className="save-status" role="status">{status}</p></section>;
+}

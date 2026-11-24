@@ -1,0 +1,20 @@
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: successpro_local
+      MYSQL_USER: successpro
+      MYSQL_PASSWORD: successpro
+      MYSQL_ROOT_PASSWORD: local-root-only
+    ports: ["3306:3306"]
+    volumes:
+      - processing-mysql:/var/lib/mysql
+      - ./schema.sql:/docker-entrypoint-initdb.d/001-resume-processing.sql:ro
+  redis:
+    image: redis:7.4-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    ports: ["6379:6379"]
+    volumes: ["processing-redis:/data"]
+volumes:
+  processing-mysql:
+  processing-redis:

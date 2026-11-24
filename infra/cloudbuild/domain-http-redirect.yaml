@@ -1,0 +1,10 @@
+name: successpro-domain-http-redirect
+defaultUrlRedirect:
+  redirectResponseCode: MOVED_PERMANENTLY_DEFAULT
+  httpsRedirect: true
+tests:
+  - description: Preserve path and query when upgrading to HTTPS
+    host: successpro.xfactor.ltd
+    path: /login?returnTo=/dashboard
+    expectedOutputUrl: https://successpro.xfactor.ltd/login?returnTo=/dashboard
+    expectedRedirectResponseCode: 301

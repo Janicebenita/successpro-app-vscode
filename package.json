@@ -1,0 +1,19 @@
+{
+  "name": "successpro",
+  "private": true,
+  "packageManager": "pnpm@11.19.0",
+  "scripts": {
+    "dev": "pnpm --filter @successpro/web dev",
+    "build": "pnpm --filter @successpro/web build",
+    "lint": "pnpm --filter @successpro/web lint",
+    "typecheck": "pnpm --filter @successpro/web typecheck",
+    "test": "pnpm --filter @successpro/web test",
+    "test:e2e": "pnpm --filter @successpro/web test:e2e",
+    "processing:worker": "python processing/run_worker.py",
+    "processing:test": "python -m unittest discover -s processing/tests -v",
+    "security:secrets": "node scripts/scan-secrets.mjs",
+    "security:sast": "node scripts/static-security-scan.mjs",
+    "security": "pnpm security:secrets && pnpm security:sast && pnpm audit --audit-level high",
+    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm security && pnpm build"
+  }
+}

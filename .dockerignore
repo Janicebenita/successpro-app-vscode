@@ -1,0 +1,22 @@
+.git
+.github
+.next
+**/.next
+node_modules
+**/node_modules
+.pnpm-store
+playwright-report
+test-results
+coverage
+output
+tmp
+docs
+successpro_codex_bundle
+Sample Resumes
+Jooble API Key*
+Careerjet India API Key*
+Render API Key*
+*.log
+**/.env*
+!.env.example
+!**/.env.example
